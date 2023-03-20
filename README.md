@@ -1,5 +1,5 @@
 # Sudoku
-Sudoku game using Python and [Curses](https://docs.python.org/3/howto/curses.html). Generates a new puzzle everytime.
+Sudoku game using Python and [Curses](https://docs.python.org/3/howto/curses.html) library. Generates a new puzzle everytime.
 
 Can choose from 4 difficulties:
 - Easy with 36 to 40 clues
