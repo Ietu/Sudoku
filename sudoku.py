@@ -13,7 +13,7 @@ lightcyan = '\033[96m'
 OKBLUE = '\033[94m'
 
 base = 3
-side = base*base
+side = base * base
 difficulty = "NONE"
 
 
@@ -62,11 +62,11 @@ print("Empty squares:", empties)
 print("Amount of clue numbers:", clue_numbers)
 
 for p in sample(range(squares), empties):
-    board[p//side][p % side] = 0
+    board[p // side][p % side] = 0
     
 numSize = len(str(side))
 
-def print_board(stdscr, board, cursor):
+def print_board(stdscr, board, cursor,):
     os.system("cls")
     stdscr.clear()
 
@@ -81,9 +81,22 @@ def print_board(stdscr, board, cursor):
     box_right_intersection = "╣"
     box_top_intersection = "╦"
     box_bottom_intersection = "╩"
-
+    
+    red = curses.color_pair(1)
+    cyan = curses.color_pair(2)
+    white = curses.color_pair(3)
+    yellow = curses.color_pair(4)
+    green = curses.color_pair(5)
+    curses.init_pair(1, curses.COLOR_RED, curses.COLOR_BLACK)
+    curses.init_pair(2, curses.COLOR_CYAN, curses.COLOR_BLACK)
+    curses.init_pair(3, curses.COLOR_WHITE, curses.COLOR_BLACK)
+    curses.init_pair(4, curses.COLOR_YELLOW, curses.COLOR_BLACK)
+    curses.init_pair(5, curses.COLOR_GREEN, curses.COLOR_BLACK)
+    
     #print the top border of the box
     stdscr.addstr(box_top_left + box_horizontal * 3 + box_top_intersection + box_horizontal * 3 + box_top_intersection + box_horizontal * 3 + box_top_right + "\n")
+
+    color = white #CHANGE THIS TO CHANGE THE COLOR OF THE NUMBERS
 
     for i in range(9):
         #print the left border of the box
@@ -93,8 +106,11 @@ def print_board(stdscr, board, cursor):
             #print the value of the cell
             if (i, j) == cursor:
                 stdscr.addstr(f" {board[i][j]} ", curses.A_REVERSE)
+            elif board[i][j] >= 1 and board[i][j] <= 9:
+                stdscr.addstr(f" {board[i][j]} ", color)
             else:
-                stdscr.addstr(f" {board[i][j]} ")
+                stdscr.addstr(f" {board[i][j]} ", white)
+
 
             #print the vertical lines between boxes
             if j == 2 or j == 5:
@@ -102,7 +118,7 @@ def print_board(stdscr, board, cursor):
 
         #print the right border of the box
         stdscr.addstr(box_vertical + "\n")
-
+        
         #print the horizontal lines between boxes
         if i == 2 or i == 5:
             stdscr.addstr(box_left_intersection + box_horizontal * 3 + box_intersection + box_horizontal * 3 + box_intersection + box_horizontal * 3 + box_right_intersection + "\n")
@@ -134,15 +150,10 @@ def move_cursor(cursor, direction):
     return (i, j)
 
 def is_identical(list1, list2):
-    if len(list1) != len(list2):
+    if list1 == list2:
+        return True
+    else:
         return False
-    for i in range(len(list1)):
-        if len(list1[i]) != len(list2[i]):
-            return False
-        for j in range(len(list1[i])):
-            if list1[i][j] != list2[i][j]:
-                return False
-    return True
 
 def play_sudoku(stdscr):
     stdscr = curses.initscr()
